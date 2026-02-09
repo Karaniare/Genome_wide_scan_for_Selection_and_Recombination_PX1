@@ -66,10 +66,10 @@ cd Genome_wide_scan_for_Selection_and_Recombination_PX1```
 ## Resources
 
 - **Example data for selection analysis**  
-  *(link to be added)*
+  *(link to be added](https://github.com/Karaniare/Genome_wide_scan_for_Selection_and_Recombination_PX1/tree/main/Examples)*
 
 - **Example data for recombination rate estimation**  
-  *(link to be added)*
+  *(link to be added](https://github.com/Karaniare/Genome_wide_scan_for_Selection_and_Recombination_PX1/tree/main/Examples)*
 
 - **LDhat documentation and resources**
   - GitHub repository: https://github.com/auton1/LDhat
