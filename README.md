@@ -111,7 +111,7 @@ The following R packages are required for the selection analyses:
 
 ## Citation
 
-If you use this code, please cite the **Niare K, Tafesse B, Treat M, Sadler J, Okitwi M, Orena S, Asua V, Kreutzfeld O, Legac J, Samuel NL, Yeka A, Rosenthal PJ, Juliano JJ, Bailey JA, Conrad MD. A novel locus associated with decreased susceptibility of Plasmodium falciparum to lumefantrine and dihydroartemisinin has emerged and spread in Uganda. bioRxiv [Preprint]. 2025 Aug 2:2025.07.30.667738. doi: 10.1101/2025.07.30.667738. PMID: 40766679; PMCID: PMC12324449** and the relevant software packages (**IsoRelate**, **rehh**, and **LDhat**).
+If you use this code, please cite the *([Niare et al. bioRxiv 2025, PMID: 40766679]([url]https://pubmed.ncbi.nlm.nih.gov/40766679/))* and the relevant software packages (**IsoRelate**, **rehh**, and **LDhat**).
 
 
 
