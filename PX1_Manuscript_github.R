@@ -2,40 +2,15 @@
 
 {
   library(isoRelate)
-  library(radiator)
-  library(GENESIS)
-  library(randomForest)
-  library(GWASdata)
-  library(ggtext)
-  library(scales)
   library(vcfR)
-  library(McCOILR)
   library(ggplot2)
   library(ggsci)
   library(ggpubr)
-  library(vroom)
-  library(ape)
-  library(hierfstat)
-  library(adegenet)
-  library(plyr)
-  library(factoextra)
-  library(FactoMineR)
-  library(Rtsne)
-  library(igraph)
-  library(reshape2)
   library(rehh)
   library(dplyr)
-  library(tidyverse)
-  library(vroom)
-  library(RColorBrewer)
-  library(pROC)
-  library(tidyverse)
-  library(rstatix)
-  library(circlize)
-  library(viridis)
-  library(ggtree)
-  library(Biostrings)
-  library(ggtext)
+  library(moimix)
+  library(R.utils)
+  library(SeqArray)
 }
 
 #### Defining some custom colors
@@ -60,7 +35,7 @@
 ############ Processing VCF for ISORELATE analysis
 
     ### Reading in VCF and extracting important data
-hib<-"AllChrs.pass.merged.annotated.updated.snps.miss10.vaf.norm.north.east.final.vcf.gz"
+hib<-"AllChrs.pass.merged.annotated.maf1.updated.major.cleaned.snps.vcf.gz"
 hib_header <- seqVCF_Header(hib)
 hib_header$format$Number[hib_header$ID == "AD"] <- "."
 info.import <- c("AC", "AF", "AN","RO","AO","MQM","MQMR","DPB", "DP", "DS",
@@ -96,7 +71,7 @@ full_maped<-readRDS("north_east_selected.rds")
 
 
 ######################################## Running ISORELATE Aanalyses #############################
-#Making space for big data processing
+#Making space for big data processing (optional)
 library(doSNOW)
 registerDoSNOW(makeCluster(8, type = "SOCK"))
 
@@ -244,7 +219,7 @@ chromo_list<-c("Pf3D7_01_v3","Pf3D7_02_v3","Pf3D7_03_v3","Pf3D7_04_v3","Pf3D7_05
                "Pf3D7_07_v3","Pf3D7_08_v3","Pf3D7_09_v3","Pf3D7_10_v3","Pf3D7_11_v3","Pf3D7_12_v3","Pf3D7_13_v3","Pf3D7_14_v3")
 chr_list<-c("chr1","chr2","chr3","chr4","chr5","chr6","chr7","chr8","chr9","chr10","chr11","chr12","chr13","chr14")
 for (i in chr_list) {
-  ug_hh<-data2haplohh(hap_file =   "AllChrs.pass.merged.annotated.maf1.updated.major.cleaned.snps.mono.north.east.vcf.gz", min_perc_geno.mrk = 90,
+  ug_hh<-data2haplohh(hap_file =   "AllChrs.pass.merged.annotated.maf1.updated.major.cleaned.snps.vcf.gz", min_perc_geno.mrk = 90,
                       vcf_reader = "data.table", verbose = T, polarize_vcf = F, min_maf=0.02,remove_multiple_markers=T,chr.name = i) 
   ug_ihh <- scan_hh(ug_hh,discard_integration_at_border = T,threads = 24,limehhs = 0.1, limhomohaplo = 4, polarized = F,maxgap = 2000000)
   ug_ihh<-data.frame(ug_ihh)
@@ -298,6 +273,7 @@ write_tsv(x=ug_ihs_all$ihs, file = "ihs_Uganda_allsnps_north_east_raw.csv")
 ### Reading data from VCFs (SNPs only and SNPs +indels)
 px1<-data2haplohh(hap_file = "AllChrs.pass.merged.annotated.maf1.updated.major.cleaned.snps.vcf.gz", min_perc_geno.mrk = 90,
                   vcf_reader = "data.table", verbose = T, polarize_vcf = F, min_maf=0.05,remove_multiple_markers=T,chr.name = "chr7")
+##### For indels (optional), provide a VCF that contains indels
 
 px1_indel<-data2haplohh(hap_file = "AllChrs.pass.merged.annotated.maf1.updated.major.cleaned.vcf.gz", min_perc_geno.mrk = 90,
                         vcf_reader = "data.table", verbose = T, polarize_vcf = F, min_maf=0.05,remove_multiple_markers=T,chr.name = "chr7")
