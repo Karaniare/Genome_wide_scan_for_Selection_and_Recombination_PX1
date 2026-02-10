@@ -111,7 +111,7 @@ The following R packages are required for the selection analyses:
 
 ## Citation
 
-If you use this code, please cite the *([Niare et al. bioRxiv 2025, PMID: 40766679]([url]https://pubmed.ncbi.nlm.nih.gov/40766679/))* and the relevant software packages (**IsoRelate**, **rehh**, and **LDhat**).
+If you use this code, please cite the *([Niare et al. bioRxiv 2025, PMID: 40766679](https://pubmed.ncbi.nlm.nih.gov/40766679/))* and the relevant software packages (**IsoRelate**, **rehh**, and **LDhat**).
 
 
 
