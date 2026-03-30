@@ -8,7 +8,7 @@ The workflows implemented here were developed in the context of the **PX1 manusc
 
 ## Features
 
-This repository contains **two main analysis pipelines**, implemented in two files: [`rehh`].  
+This repository contains **two main analysis pipelines**, implemented in two files: [`Selection.R`](https://github.com/Karaniare/Genome_wide_scan_for_Selection_and_Recombination_PX1/blob/main/PX1_Manuscript_github.R).  
 Each file includes **step-by-step instructions** to guide users through the analyses.
 
 ---
