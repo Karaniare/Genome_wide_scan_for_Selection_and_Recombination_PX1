@@ -8,7 +8,7 @@ The workflows implemented here were developed in the context of the **PX1 manusc
 
 ## Features
 
-This repository contains **two main analysis pipelines**, implemented in two files.  
+This repository contains **two main analysis pipelines**, implemented in two files: [`rehh`].  
 Each file includes **step-by-step instructions** to guide users through the analyses.
 
 ---
