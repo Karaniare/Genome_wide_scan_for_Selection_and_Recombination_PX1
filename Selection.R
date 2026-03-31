@@ -35,6 +35,7 @@
 ############ Processing VCF for ISORELATE analysis
 
     ### Reading in VCF and extracting important data
+## For this analysis, you only need to provide your VCF
 hib<-"AllChrs.pass.merged.annotated.maf1.updated.major.cleaned.snps.vcf.gz"
 hib_header <- seqVCF_Header(hib)
 hib_header$format$Number[hib_header$ID == "AD"] <- "."
@@ -80,6 +81,8 @@ stopCluster(makeCluster(8, type = "SOCK"))
 ## Extracting genotypes from the reformatted WGS data
 
 full_maped<-readRDS("north_east_selected.rds")
+#### You can modify the Minor allele frequency (maf) and sample and variant missingness rates (isolate.max.missing,snp.max.missing)
+
 full_genotypes <- isoRelate::getGenotypes(ped.map = full_maped,
                                           reference.ped.map = NULL,
                                           maf = 0.02,
@@ -110,6 +113,8 @@ head(st_ibd)
 
 
 ###### Making population definition files
+## Replace px1_genotypes_metadata_combined.tsv by your metadata sheet
+## Replace major_genotype by your group variable
 
 gp<-read.table("px1_genotypes_metadata_combined.tsv", header = T, sep = "\t")
 gp$major_genotype[gp$major_genotype=="A675V"]<-"Mutant"
@@ -184,6 +189,7 @@ st_iR_grp <- getIBDiR(ped.genotypes = full_genotypes, ### with stratification by
   st_iR_grp$chr[st_iR_grp$chr=="Pf3D7_14_v3"]<-14
 }
 
+### Save your results and give a name to each file. Here we called them IR_allsnps_north_east_maf2.csv and IR_allsnps_north_east_stratification_maf2.csv
 write_tsv(x=st_iR, file = "IR_allsnps_north_east_maf2.csv")
 write_tsv(x=st_iR_grp, file = "IR_allsnps_north_east_stratification_maf2.csv")
 
@@ -214,6 +220,8 @@ write_tsv(x=st_iR, file = "IR_allsnps_north_east_maf2.csv")
 
 ############################################ Genome-wide analysis for iHS signals of selection ##################################################################
 ### loading data from VCF and scanning for EHH
+### You only need to provide your VCF
+## If your chromsomes are named like "Pf3D7_01_v3", use chromo_list in the loop; or "chr1", use chr_list
 ug_ihh_all<-data.frame()
 chromo_list<-c("Pf3D7_01_v3","Pf3D7_02_v3","Pf3D7_03_v3","Pf3D7_04_v3","Pf3D7_05_v3","Pf3D7_06_v3",
                "Pf3D7_07_v3","Pf3D7_08_v3","Pf3D7_09_v3","Pf3D7_10_v3","Pf3D7_11_v3","Pf3D7_12_v3","Pf3D7_13_v3","Pf3D7_14_v3")
@@ -264,6 +272,7 @@ for (i in chr_list) {
 #### Calculating iHS and and saving final results
 ug_ihs_all<-ihh2ihs(ug_ihh_all, freqbin = 50, verbose = F, standardize = T, min_nhaplo = 4)
 
+### Save the results. You can choose any name for the file. Here we are using "ihs_Uganda_allsnps_north_east_raw.csv'
 write_tsv(x=ug_ihs_all$ihs, file = "ihs_Uganda_allsnps_north_east_raw.csv")
 
 #####
@@ -271,14 +280,17 @@ write_tsv(x=ug_ihs_all$ihs, file = "ihs_Uganda_allsnps_north_east_raw.csv")
 ######################################## Anlyzing EHH decay around drug resistance markers (here PX1)-- ################################################################################
 
 ### Reading data from VCFs (SNPs only and SNPs +indels)
+## Here you only need to provide a VCF and specify the chromsome name. Here we use "AllChrs.pass.merged.annotated.maf1.updated.major.cleaned.snps.vcf.gz" and "chr7" 
 px1<-data2haplohh(hap_file = "AllChrs.pass.merged.annotated.maf1.updated.major.cleaned.snps.vcf.gz", min_perc_geno.mrk = 90,
                   vcf_reader = "data.table", verbose = T, polarize_vcf = F, min_maf=0.05,remove_multiple_markers=T,chr.name = "chr7")
+
 ##### For indels (optional), provide a VCF that contains indels
 
 px1_indel<-data2haplohh(hap_file = "AllChrs.pass.merged.annotated.maf1.updated.major.cleaned.vcf.gz", min_perc_geno.mrk = 90,
                         vcf_reader = "data.table", verbose = T, polarize_vcf = F, min_maf=0.05,remove_multiple_markers=T,chr.name = "chr7")
 
 #### only px1 gene signals
+### Remove a marker if your sample set does not have it or add any marker of interest
 {   px1_res1<-calc_ehh(px1, mrk = "chr7:897322:897322:G:A", include_nhaplo = T,include_zero_values = T)
   anc<-data.frame(position=px1_res1$ehh$POSITION,ehh=px1_res1$ehh$EHH_A,Haplotype="WT",mutation="D1705N")
   derv1<-data.frame(position=px1_res1$ehh$POSITION,ehh=px1_res1$ehh$EHH_D,Haplotype="Mutant",mutation="D1705N")
@@ -335,3 +347,7 @@ px1_indel<-data2haplohh(hap_file = "AllChrs.pass.merged.annotated.maf1.updated.m
   ## dat_ehh_px1 is final results
   
 }
+
+##### Save the results of EHH around defined markers and choose a name. Here we use "EHH_data_for_markers.csv"
+
+write_tsv(x=dat_ehh_px1, file="EHH_data_for_markers.csv")
